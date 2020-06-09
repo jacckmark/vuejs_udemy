@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="">
+        <script src="vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <button v-on:click="counter++">increase</button>
+            <button v-on:click="counter--">decrease</button>
+            <!-- this is a shorthand when writing the attributes like v-on:click -->
+            <button @click="secondCounter++">increase second counter</button>
+            <p>Counter:
+                {{counter}}
+                |
+                {{secondCounter}}</p>
+            <p>Result:
+                {{result()}}
+                |
+                {{output}}</p>
+            <!-- shorthand for href -->
+            <a :href="https://google.com"></a>
+        </div>
+        <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    counter: 0,
+                    secondCounter: 0
+                },
+                // this property can be used just like the properties in data object, computed will analyze the code and run the code only if the change of data
+                // properties affects it (so it will not run if we increase the secondCounter)
+                computed: {
+                    output: function () {
+                        console.log('computed');
+                        return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5';
+                    }
+                },
+                // watch is watching for changes and then running the code if necessary (computed is almost always better, the one exception of this rule is the
+                // asynchronous code)
+                watch: {
+                    counter: function (value) {
+                        // we setup the property we wanna watch so it has to match with one of properties in data section
+                        // we have to store this in variable because it will not be available inside of closure
+                        var vm = this;
+                        setTimeout(() => {
+                            vm.counter = 0;
+                        }, 2000);
+                    }
+                },
+                // vuejs will watch the data properties and upon changes run the method (this is great in small applications but will waste a lot of time and
+                // effort when there is no real changes affecting the reult of this method), so it will run if we increase the secondCounter which is unnecessary
+                methods: {
+                    result: function () {
+                        console.log('Method');
+                        return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

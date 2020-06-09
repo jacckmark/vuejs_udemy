@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="">
+        <script src="vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div
+                class="box-container">
+                <!-- clicking the first box will change the attachRed value thus adding or removing the class from first two boxes -->
+                <div class="demo" @click="attachRed=!attachRed" :class="{red:attachRed}"></div>
+                <div class="demo" :class="{red:attachRed}"></div>
+                <!-- we can also listen to the changes on variable (using computed) and then setting the different values (great when we would need to change more than one class) -->
+                <div class="demo" :class="divClasses"></div>
+                <!--class property can also be two way binded from for example input -->
+                <div class="demo" :class="color"></div>
+            </div>
+            <label>color for rectangle nr 4 (blue,red,green...we don't have more colors...yet)</label><input type="text" v-model="color">
+        </div>
+        <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    attachRed: false,
+                    color: 'blue'
+                },
+                computed: {
+                    divClasses: function () {
+                        return {
+                            red: this.attachRed,
+                            blue: !this.attachRed
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
+    <style>
+        .box-container {
+            display: flex;
+            width: 90vw;
+            height: 50vh;
+        }
+        .demo {
+            background: grey;
+            width: 100%;
+            margin: 2vw;
+        }
+        .red {
+            background-color: red;
+        }
+        .green {
+            background-color: green;
+        }
+        .blue {
+            background-color: blue;
+        }
+        label,
+        input {
+            display: block;
+            width: 30vw;
+        }
+    </style>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="">
+        <script src="vue.js"></script>
+    </head>
+    <body>
+        <div
+            id="app">
+            <!-- this will result in freezing the variable value (it will not change later on when we change the title variable value) -->
+            <h1 v-once>{{title}}</h1>
+            <!-- this will change the text of title based on input (by running method changeTitle), this can be done easier with v-model directive (look below) -->
+            <input type="text" v-on:input="changeTitle">
+            <p>{{title}}</p>
+            <input type="text" v-model="title2">
+            <p>{{title2}}</p>
+            <!-- displaying the result of a function run is also possible -->
+            <p>{{returnString()}}</p>
+            <!-- this will bind the property from component data (our link) to the href of and anchorlink -->
+            <a v-bind:href="link">google link</a>
+            <!-- v-html tells vuejs to render the code in form of string to an normal element so we can see our finished link -->
+            <p v-html=""></p>
+            <!-- we can also access the event and pass it to the function if necessary -->
+            <button v-on:click="increase(2, $event)">click to increase</button>
+            <p>{{counter}}</p>
+            <!-- this will listen to mouse move event and run the fuction which will in turn assign to x and y the mouse current position values -->
+            <p v-on:mousemove="updateCoordinates">Coordinates:
+                {{coordinates.x}}/{{coordinates.y}}
+                <!-- this will, in turn, stop triggering of function updateCoordinates -->
+                <span v-on:mousemove.stop>DEAD SPOT</span>
+            </p>
+            <!-- this will run the function alertMe only when we hit enter (or space) when inside input box -->
+            <input type="text" v-on:keyup.enter.space="alertMe">
+        </div>
+        <script>
+            new Vue({
+                el: '#app',
+                // list of our data variables for component
+                data: {
+                    title: 'Hello World',
+                    title2: 'Hello World',
+                    link: 'http://google.com',
+                    finishedLink: '<a href="https://google.com">google</a>',
+                    counter: 0,
+                    coordinates: {
+                        x: 0,
+                        y: 0
+                    }
+                },
+                // list of our methods for component
+                methods: {
+                    changeTitle: function (event) {
+                        this.title = event.target.value;
+                    },
+                    returnString: function () {
+                        return 'Hello';
+                    },
+                    increase: function (step, event) {
+                        this.counter += step;
+                        console.log(event);
+                    },
+                    updateCoordinates: function (event) {
+                        this.coordinates.x = event.clientX;
+                        this.coordinates.y = event.clientY;
+                    },
+                    alertMe: function () {
+                        alert('alert!!!');
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
